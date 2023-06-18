@@ -1,5 +1,7 @@
 # RUCKUS-RWG-Templates
 Config Templates for the RUCKUS WAN Gateway.
+
+# microsegmentation.yml
 Edit the template to match the following parameters in your environment:
 - interface: change to match the LAN interface on your RWG.
 - cidr: make sure the subnet does not conflict with your network.
