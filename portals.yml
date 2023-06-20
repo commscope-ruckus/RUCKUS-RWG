@@ -35,6 +35,7 @@ SubnetsFilter:
 - name: Block Subnets
   policies:
   - Free
+  - Pre-Auth / Guests
 SharedCredentialGroup:
 - name: Free
   policy: Free
