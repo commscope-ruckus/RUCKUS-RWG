@@ -1,7 +1,7 @@
 # RUCKUS-RWG-Templates
 Config Templates for the RUCKUS WAN Gateway.
 
-# microsegmentation.yml
+# microseg_vlan_pool.yml
 One RADIUS realm, one policy, one IP group, one VLAN pool and one network address. Used for basic microsegmentation.
 Edit the template to match the following parameters in your environment:
 - interface: change to match the LAN interface on your RWG.
