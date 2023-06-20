@@ -2,6 +2,19 @@
 Policy:
 - name: Free
 BandwidthQueue:
+- name: 100%
+  upload_bw: 100
+  upload_bw_unit: "%"
+  download_bw: 100
+  download_bw_unit: "%"
+  priority: 0
+  rt_upload_bw_unit: Kbps
+  rt_download_bw_unit: Kbps
+  burst_upload_bw_unit: Kbps
+  burst_download_bw_unit: Kbps
+  sharing: ip
+  policies:
+  - Pre-Auth / Guests
 - name: 10 x 3 Mbps with burst
   upload_bw: 3
   upload_bw_unit: Mbps
@@ -16,6 +29,10 @@ BandwidthQueue:
   burst_download_bw_unit: Mbps
   burst_ms: 5000
   sharing: ip
+  policies:
+  - Free
+SubnetsFilter:
+- name: Block Subnets
   policies:
   - Free
 SharedCredentialGroup:
@@ -46,15 +63,6 @@ SharedCredentialGroup:
   sat: true
   sun: true
   recurring_method: none
-SurveyQuestion:
-- question: Email Address
-  question_type: email
-  required: true
-  position: 1
-  captive_portals:
-  - Default Splash
-  landing_portals:
-  - Default Landing
 CaptivePortal:
 - name: Default Splash
   portal_name: default
@@ -64,12 +72,10 @@ CaptivePortal:
   role_attribute: none
   shared_credential_groups:
   - Free
-  survey_questions:
-  - Email Address
   wan_targets:
   - Certificate Validation Hosts
   policies:
-  - Pre-Auth / Guests
+  -  Pre-Auth / Guests
 LandingPortal:
 - name: Default Landing
   portal_name: default
@@ -78,7 +84,15 @@ LandingPortal:
   session_grace_minutes: 15
   portal_automatic_login: mac_or_cookie
   background_automatic_login: mac
-  survey_questions:
-  - Email Address
   policies:
   - Free
+SurveyQuestion:
+- question: Email Address
+  question_type: email
+  required: true
+  position: 1
+  captive_portals:
+  - Default Splash
+  landing_portals:
+  - Default Landing
+
