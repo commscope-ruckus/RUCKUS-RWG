@@ -12,3 +12,6 @@ Edit the template to match the following parameters in your environment:
 
 # portals.yml
 One policy, one splash portal, one landing portal, one survery question, one bandwidth queue and one shared credential.
+
+# plans.yml
+One account group, one free usage plan using a quota plan and a time plan, portal modifications. 
