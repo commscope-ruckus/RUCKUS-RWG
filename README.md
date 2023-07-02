@@ -15,3 +15,6 @@ One policy, one splash portal, one landing portal, one survery question, one ban
 
 # plans.yml
 One account group, one free usage plan using a quota plan and a time plan, portal modifications. 
+
+# billing.yml
+One account group, one premium usage plan using unlimited quota and time plans, one merchant.
