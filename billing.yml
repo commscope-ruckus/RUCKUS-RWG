@@ -1,0 +1,70 @@
+Policy:
+- name: Premium
+AccountGroup:
+- name: Premium
+  policy: Premium
+  priority: 4
+BandwidthQueue:
+- name: 100%
+  policies:
+  - Premium
+  - Pre-Auth / Guests
+SubnetsFilter:
+- name: Block Subnets
+  policies:
+  - Free
+  - Pre-Auth / Guests
+  - Premium
+LandingPortal:
+- name: Default Landing
+  policies:
+  - Free
+  - Premium
+Merchant:
+- name: Authorize.Net
+  gateway: AuthorizeNet
+  login: API login
+  password: Transaction key
+  test: true
+  signature: Signature key
+  store_payment_methods: true
+  dup_timeout_seconds: 60
+TimePlan:
+- name: Unlimited
+  price: 0.0
+  unlimited_usage_minutes: true
+QuotaPlan:
+- name: Unlimited
+  price: 0.0
+  unlimited_usage_mb_up: true
+  unlimited_usage_mb_down: true
+UsagePlan:
+- name: Premium
+  account_group: Premium
+  currency: USD
+  recurring_method: monthly
+  variable_recurring_day: true
+  automatic_login: true
+  time_plan: Unlimited
+  quota_plan: Unlimited
+  usage_lifetime_time: 1
+  recurring_retry_grace_minutes: 1440
+  recurring_fail_limit: 5
+  lock_devices: true
+  unlimited_devices: true
+  unlimited_sessions: true
+  usage_lifetime_time_unit: months
+  max_dedicated_ips: 0
+  pms_guest_match_operator: OR
+  recurring_lifetime_time_unit: months
+  unlimited_recurring_lifetime: true
+  validation_method: none
+  validation_grace_minutes: 0
+  max_party_devices: 0
+  base_price: 30.0
+  captive_portals:
+  - Default Splash
+  landing_portals:
+  - Default Landing
+  merchants:
+  - Authorize.Net
