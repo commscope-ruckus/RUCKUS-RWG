@@ -1,0 +1,286 @@
+---
+Vlan:
+- name: VLAN 100
+  interface: igb5
+  tag: 100
+  autoincrement_mode: none
+- name: VLAN 150
+  interface: igb5
+  tag: 150
+  autoincrement_mode: none
+- name: VLAN 200
+  interface: igb5
+  tag: 200
+  autoincrement_mode: none
+Address:
+- name: subnet 100
+  vlan: VLAN 100
+  span: 1
+  autoincrement: 1
+  primary: true
+  cidr: 100.0.0.1/24
+  nats:
+  - Disable NAT on "subnet 100"
+- name: subnet 150
+  vlan: VLAN 150
+  span: 1
+  autoincrement: 1
+  cidr: 150.0.0.1/24
+  nats:
+  - Disable NAT on "subnet 150"
+- name: subnet 200
+  vlan: VLAN 200
+  span: 1
+  autoincrement: 1
+  cidr: 200.0.0.1/24
+  nats:
+  - Disable NAT on "subnet 200"
+Nat:
+- name: Disable NAT on "subnet 100"
+  addresses:
+  - subnet 100
+  uplinks:
+  - Uplink
+- name: Disable NAT on "subnet 150"
+  addresses:
+  - subnet 150
+  uplinks:
+  - Uplink
+- name: Disable NAT on "subnet 200"
+  addresses:
+  - subnet 200
+  uplinks:
+  - Uplink
+DhcpPool:
+- name: subnet 100
+  start_ip: 100.0.0.2
+  end_ip: 100.0.0.254
+  start_reserved: 0
+  end_reserved: 0
+  router_host_nth: 0
+- name: subnet 150
+  start_ip: 150.0.0.2
+  end_ip: 150.0.0.254
+  start_reserved: 0
+  end_reserved: 0
+  router_host_nth: 0
+- name: subnet 200
+  start_ip: 200.0.0.2
+  end_ip: 200.0.0.254
+  start_reserved: 0
+  end_reserved: 0
+  router_host_nth: 0
+SwitchPortProfile:
+- name: VLAN 100, 150 and 200
+  radius_authentication: none
+  switch_ports:
+  - GigabitEthernet1/1/11
+  - GigabitEthernet1/1/3
+  vlans:
+  - VLAN 100
+  - VLAN 150
+  - VLAN 200
+Policy:
+- name: VLAN 100 policy
+- name: VLAN 150 Policy
+- name: VLAN 200 Policy
+AccountGroup:
+- name: VLAN 100 Account Group
+  policy: VLAN 100 Policy
+  priority: 4
+  disable_enhanced_psk_security: true
+- name: VLAN 150 Account Group
+  policy: VLAN 150 Policy
+  priority: 4
+  disable_enhanced_psk_security: true
+- name: VLAN 200 Account Group
+  policy: VLAN 200 Policy
+  priority: 4
+  disable_enhanced_psk_security: true
+RadiusServer:
+- name: Realm VLAN 100
+  reuse_vlans: true
+  vta_timeout_minutes: 60
+  vlan_sharing: account
+  unlimited_vlans_per_csid_mac: true
+  rank: 0
+  realm_admission_logic: or
+  radius_server_attributes:
+  - Tunnel-Type
+  - Tunnel-Medium-Type
+  - Tunnel-Private-Group-Id
+  - Ruckus-DPSK
+  vlans:
+  - VLAN 100
+  policies:
+  - VLAN 100 Policy
+- name: Realm VLAN 150
+  reuse_vlans: true
+  vta_timeout_minutes: 60
+  vlan_sharing: account
+  unlimited_vlans_per_csid_mac: true
+  rank: 0
+  realm_admission_logic: or
+  radius_server_attributes:
+  - Tunnel-Type
+  - Tunnel-Medium-Type
+  - Tunnel-Private-Group-Id
+  - Ruckus-DPSK
+  vlans:
+  - VLAN 150
+  policies:
+  - VLAN 150 Policy
+- name: Realm VLAN 200
+  reuse_vlans: true
+  vta_timeout_minutes: 60
+  vlan_sharing: account
+  unlimited_vlans_per_csid_mac: true
+  rank: 0
+  realm_admission_logic: or
+  radius_server_attributes:
+  - Tunnel-Type
+  - Tunnel-Medium-Type
+  - Tunnel-Private-Group-Id
+  - Ruckus-DPSK
+  vlans:
+  - VLAN 200
+  policies:
+  - VLAN 200 Policy
+Wlan:
+- name: dpsk
+  ssid: dpsk
+  encryption: ccmp
+  authentication: dpsk
+  default_vlan: 1
+  infrastructure_device: vSZ-15
+  access_point_zone: Enceladus
+  access_point_profiles:
+  - default
+  vlans:
+  - VLAN 100
+  - VLAN 150
+  - VLAN 200
+Account:
+- login: user1
+  crypted_password: "$2a$11$AAQDmZ6iiqJOCY3y7KdI8.2H4avvegIBcDhq3JpJzSxt179QtzFaq"
+  first_name: User
+  last_name: One
+  email: user1@test.com
+  usage_minutes: 15
+  no_usage_expiration: true
+  automatic_login: true
+  unlimited_usage_mb_up: true
+  unlimited_usage_mb_down: true
+  country: US
+  max_devices: 3
+  max_sessions: 1
+  max_dedicated_ips: 0
+  account_group: VLAN 100 Account Group
+  pre_shared_key: user1-12345678
+  email_validated: true
+  max_party_devices: 0
+  nt_password: 9e8cb3e38c052a6141ad3fc87f0ffa5c
+  max_sub_accounts: 0
+- login: user2
+  crypted_password: "$2a$11$gAK1IWu8eT7jNGBXYTDF7ONBoa8lADrLKh8gYfz3Ro89.eixq9dUS"
+  first_name: User
+  last_name: Two
+  email: user2@test.com
+  usage_minutes: 15
+  no_usage_expiration: true
+  automatic_login: true
+  unlimited_usage_mb_up: true
+  unlimited_usage_mb_down: true
+  country: US
+  lock_version: 1
+  max_devices: 3
+  max_sessions: 1
+  max_dedicated_ips: 0
+  account_group: VLAN 100 Account Group
+  pre_shared_key: user2-12345678
+  email_validated: true
+  max_party_devices: 0
+  nt_password: 9e8cb3e38c052a6141ad3fc87f0ffa5c
+  max_sub_accounts: 0
+- login: user3
+  crypted_password: "$2a$11$H2hK92og7lvuzQGCNtoaLu8IAqD8yjUTCKycIZM.8xHgcxhp1bQ9y"
+  first_name: User
+  last_name: Three
+  email: user3@test.com
+  usage_minutes: 15
+  no_usage_expiration: true
+  automatic_login: true
+  unlimited_usage_mb_up: true
+  unlimited_usage_mb_down: true
+  country: US
+  max_devices: 3
+  max_sessions: 1
+  max_dedicated_ips: 0
+  account_group: VLAN 150 Account Group
+  pre_shared_key: user3-12345678
+  email_validated: true
+  max_party_devices: 0
+  nt_password: 9e8cb3e38c052a6141ad3fc87f0ffa5c
+  max_sub_accounts: 0
+- login: user4
+  crypted_password: "$2a$11$HIkFRMr2dbsDf6797LbeB.Pe/eFVkbppvC3xyVLaEDo6vYkWTBz6S"
+  first_name: User
+  last_name: Four
+  email: test4@gmail.com
+  usage_minutes: 15
+  no_usage_expiration: true
+  automatic_login: true
+  unlimited_usage_mb_up: true
+  unlimited_usage_mb_down: true
+  country: US
+  max_devices: 3
+  max_sessions: 1
+  max_dedicated_ips: 0
+  account_group: VLAN 150 Account Group
+  pre_shared_key: user4-12345678
+  email_validated: true
+  max_party_devices: 0
+  nt_password: 9e8cb3e38c052a6141ad3fc87f0ffa5c
+  max_sub_accounts: 0
+- login: user5
+  crypted_password: "$2a$11$D6IS5FnPH.aROCL6QqYyM.JvRBUct7c4.2wamGv9Lh9bn.oaSLCUW"
+  first_name: User
+  last_name: Five
+  email: test5@gmail.com
+  usage_minutes: 15
+  no_usage_expiration: true
+  automatic_login: true
+  unlimited_usage_mb_up: true
+  unlimited_usage_mb_down: true
+  country: US
+  max_devices: 3
+  max_sessions: 1
+  max_dedicated_ips: 0
+  account_group: VLAN 200 Account Group
+  pre_shared_key: user5-12345678
+  email_validated: true
+  max_party_devices: 0
+  nt_password: 9e8cb3e38c052a6141ad3fc87f0ffa5c
+  max_sub_accounts: 0
+- login: user6
+  crypted_password: "$2a$11$x1mVLOvzZxwldKReCx8M6OJzSNHR6ULo68wVGEdyW4fLy4tDu0HEm"
+  first_name: User
+  last_name: Six
+  email: test6@gmail.com
+  usage_minutes: 15
+  no_usage_expiration: true
+  automatic_login: true
+  unlimited_usage_mb_up: true
+  unlimited_usage_mb_down: true
+  country: US
+  max_devices: 3
+  max_sessions: 1
+  max_dedicated_ips: 0
+  account_group: VLAN 200 Account Group
+  pre_shared_key: user6-12345678
+  email_validated: true
+  max_party_devices: 0
+  nt_password: 9e8cb3e38c052a6141ad3fc87f0ffa5c
+  max_sub_accounts: 0
+
+
