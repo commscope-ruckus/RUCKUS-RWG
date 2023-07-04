@@ -1,0 +1,66 @@
+Vlan:
+- name: Onboard VLANs
+  interface: igb5
+  tag: 300
+  autoincrement_ratio: 1
+  autoincrement_mode: address
+Address:
+ - name: Onboard Addresses
+  vlan: Onboard VLANs
+  span: 1
+  autoincrement: 64
+  primary: true
+  cidr: 20.0.0.1/30
+DhcpPool:
+- name: Onboard Addresses
+  start_ip: 20.0.0.2
+  end_ip: 20.0.0.254
+  start_reserved: 0
+  end_reserved: 0
+  router_host_nth: 0
+Nat:
+- name: NAT on "Onboard Addresses"
+  addresses:
+  - Onboard Addresses
+  uplinks:
+  - Uplink
+SwitchPortProfile:
+- name: Onboard VLANs
+  radius_authentication: none
+  switch_ports:
+  - GigabitEthernet1/1/11
+  - GigabitEthernet1/1/3
+  vlans:
+  - Onboard VLANs
+RadiusServer:
+- name: Microsegmentation Realm
+  reuse_vlans: true
+  vta_timeout_minutes: 60
+  vlan_sharing: device
+  unlimited_vlans_per_csid_mac: true
+  rank: 0
+  realm_admission_logic: or
+  radius_server_attributes:
+  - Tunnel-Type
+  - Tunnel-Medium-Type
+  - Tunnel-Private-Group-Id
+  vlans:
+  - Onboard VLANs
+  radius_attribute_patterns:
+  - id: 1
+  radius_attribute: Called-Station-Id
+  pattern: micro
+  priority: 0
+  logic: OR
+Wlan:
+- name: microseg
+  ssid: microseg
+  encryption: none
+  authentication: mac
+  default_vlan: 1
+  infrastructure_device: vSZ-15
+  access_point_zone: Enceladus
+  access_point_profiles:
+  - default
+  vlans:
+  - Onboard VLANs
