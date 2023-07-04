@@ -1,0 +1,58 @@
+Policy:
+- name: Premium
+  _delete: true
+AccountGroup:
+- name: Premium
+  policy: Premium
+  priority: 4
+  _delete: true
+Merchant:
+- name: Authorize.Net
+  gateway: AuthorizeNet
+  login: 7LuAPj85R
+  password: 57TDfCNQM695du38
+  test: true
+  signature: B9F89994BB2F89F875D6578916931A608124EA2B21B5788E20C22C6A5F9AD4ABE125AA971FC28BC7A3D72328D738B319E7665B9D05B99C5C5B4E18F9EC1B4E53
+  store_payment_methods: true
+  dup_timeout_seconds: 60
+  _delete: true
+TimePlan:
+- name: Unlimited
+  price: 0.0
+  unlimited_usage_minutes: true
+  _delete: true
+QuotaPlan:
+- name: Unlimited
+  price: 0.0
+  unlimited_usage_mb_up: true
+  unlimited_usage_mb_down: true
+  _delete: true
+UsagePlan:
+- name: Premium
+  account_group: Premium
+  currency: USD
+  recurring_method: monthly
+  variable_recurring_day: true
+  automatic_login: true
+  time_plan: Unlimited
+  quota_plan: Unlimited
+  usage_lifetime_time: 1
+  recurring_retry_grace_minutes: 1440
+  recurring_fail_limit: 5
+  lock_devices: true
+  unlimited_devices: true
+  unlimited_sessions: true
+  usage_lifetime_time_unit: months
+  max_dedicated_ips: 0
+  pms_guest_match_operator: OR
+  recurring_lifetime_time_unit: months
+  unlimited_recurring_lifetime: true
+  validation_method: none
+  validation_grace_minutes: 0
+  max_party_devices: 0
+  base_price: 30.0
+  captive_portals:
+  - Default Splash
+  landing_portals:
+  - Default Landing
+  _delete: true

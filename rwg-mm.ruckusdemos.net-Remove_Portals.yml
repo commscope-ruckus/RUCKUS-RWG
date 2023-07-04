@@ -1,0 +1,99 @@
+---
+Policy:
+- name: Free
+  _delete: true
+BandwidthQueue:
+- name: 100%
+  upload_bw: 100
+  upload_bw_unit: "%"
+  download_bw: 100
+  download_bw_unit: "%"
+  priority: 0
+  rt_upload_bw_unit: Kbps
+  rt_download_bw_unit: Kbps
+  burst_upload_bw_unit: Kbps
+  burst_download_bw_unit: Kbps
+  sharing: ip
+  policies:
+  - Pre-Auth / Guests
+- name: 10 x 3 Mbps with burst
+  upload_bw: 3
+  upload_bw_unit: Mbps
+  download_bw: 10
+  download_bw_unit: Mbps
+  priority: 0
+  rt_upload_bw_unit: Mbps
+  rt_download_bw_unit: Mbps
+  burst_upload_bw: 10
+  burst_upload_bw_unit: Mbps
+  burst_download_bw: 30
+  burst_download_bw_unit: Mbps
+  burst_ms: 5000
+  sharing: ip
+  policies:
+  - Free
+  _delete: true
+SharedCredentialGroup:
+- name: Free
+  policy: Free
+  priority: 6
+  credential: free
+  min_mac_login_period: 5
+  usage_minutes: 15
+  usage_mb_up: 10
+  usage_mb_down: 50
+  unlimited_simultaneous_sessions: true
+  starts_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2022-10-11 05:00:00.000000000 Z
+    zone: &1 !ruby/object:ActiveSupport::TimeZone
+      name: America/Chicago
+    time: 2022-10-11 00:00:00.000000000 Z
+  ends_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2032-10-31 05:00:00.000000000 Z
+    zone: *1
+    time: 2032-10-31 00:00:00.000000000 Z
+  state: active
+  mon: true
+  tues: true
+  wed: true
+  thurs: true
+  fri: true
+  sat: true
+  sun: true
+  recurring_method: none
+  _delete: true
+CaptivePortal:
+- name: Default Splash
+  portal_name: default
+  background_automatic_login: mac
+  portal_automatic_login: mac_or_cookie
+  password_reset_method: secret_question
+  role_attribute: none
+  shared_credential_groups:
+  - Free
+  wan_targets:
+  - Certificate Validation Hosts
+  policies:
+  -  Pre-Auth / Guests
+  _delete: true
+LandingPortal:
+- name: Default Landing
+  portal_name: default
+  unlimited_session_minutes: true
+  idle_minutes: 20
+  session_grace_minutes: 15
+  portal_automatic_login: mac_or_cookie
+  background_automatic_login: mac
+  policies:
+  - Free
+  _delete: true
+SurveyQuestion:
+- question: Email Address
+  question_type: email
+  required: true
+  position: 1
+  captive_portals:
+  - Default Splash
+  landing_portals:
+  - Default Landing
+  _delete: true

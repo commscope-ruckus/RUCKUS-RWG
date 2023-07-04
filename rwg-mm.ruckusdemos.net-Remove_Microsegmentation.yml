@@ -1,0 +1,92 @@
+---
+Policy:
+- name: Pre-Auth / Guests
+  default: true
+  _delete: true
+Vlan:
+- name: Pre-Auth / Guests
+  interface: igb5
+  tag: 1100
+  autoincrement_ratio: 8
+  autoincrement_mode: address
+  _delete: true
+Address:
+- name: Pre-Auth / Guests
+  vlan: Pre-Auth / Guests
+  span: 1
+  autoincrement: 64
+  cidr: 100.0.0.1/30
+  policy: Pre-Auth / Guests
+  nats:
+  - Enable NAT on "Pre-Auth / Guests"
+  _delete: true
+IpGroup:
+- name: Pre-Auth / Guests
+  priority: 2
+  addresses:
+  - Pre-Auth / Guests
+  policy: Pre-Auth / Guests
+  _delete: true
+DhcpPool:
+- name: Pre-Auth / Guests
+  start_ip: 100.0.0.2
+  end_ip: 100.0.0.254
+  start_reserved: 0
+  end_reserved: 0
+  router_host_nth: 0
+  _delete: true
+Nat:
+- name: Enable NAT on "Pre-Auth / Guests"
+  addresses:
+  - Pre-Auth / Guests
+  uplinks:
+  - Uplink
+  _delete: true
+SwitchPortProfile:
+- name: VLAN Pool
+  radius_authentication: none
+  switch_ports:
+  - _lookup:
+    - name: GigabitEthernet1/1/3
+      infrastructure_device_id: 160
+  - _lookup:
+    - name: GigabitEthernet1/1/11
+      infrastructure_device_id: 160
+  vlans:
+  - Pre-Auth / Guests
+  _delete: true
+RadiusServer:
+- name: Pre-Auth / Guests
+  reuse_vlans: true
+  vta_timeout_minutes: 60
+  vlan_sharing: device
+  unlimited_vlans_per_csid_mac: true
+  rank: 4
+  realm_admission_logic: or
+  radius_server_attributes:
+  - Tunnel-Type
+  - Tunnel-Medium-Type
+  - Tunnel-Private-Group-Id
+  vlans:
+  - Pre-Auth / Guests
+  radius_attribute_patterns:
+  - id: 1
+    radius_attribute: Called-Station-Id
+    pattern: Start Here
+    priority: 0
+    logic: OR
+  _delete: true
+Wlan:
+- name: Start Here
+  ssid: Start Here
+  encryption: none
+  authentication: mac
+  default_vlan: 1
+  accounting: true
+  infrastructure_device: vSZ-17
+  access_point_zone: Enceladus
+  access_point_profiles:
+  - default
+  vlans:
+  - Pre-Auth / Guests
+  _delete: true
