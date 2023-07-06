@@ -2,19 +2,6 @@
 Policy:
 - name: Free
 BandwidthQueue:
-- name: 100%
-  upload_bw: 100
-  upload_bw_unit: "%"
-  download_bw: 100
-  download_bw_unit: "%"
-  priority: 0
-  rt_upload_bw_unit: Kbps
-  rt_download_bw_unit: Kbps
-  burst_upload_bw_unit: Kbps
-  burst_download_bw_unit: Kbps
-  sharing: ip
-  policies:
-  - Pre-Auth / Guests
 - name: 10 x 3 Mbps with burst
   upload_bw: 3
   upload_bw_unit: Mbps
