@@ -12,7 +12,7 @@ You may need to edit the templates to match the parameters in your environment, 
 # basic_microsegmentation.yml
 One RADIUS realm, one WLAN, one VLAN pool and one network address. One open wlan.
 
-# dpsk_using_same_vlans.yaml
+# dpsk_using_same_vlans.yml
 Three RADIUS realms, three account groups, three VLANs and three network addresses. Six accounts. One wlan using DPSK.
 
 # dpsk_using_vlan_pool.yaml
@@ -30,7 +30,7 @@ One account group, one free usage plan using a quota plan and a time plan, porta
 # billing.yml
 One account group, one premium usage plan using unlimited quota and time plans, one merchant.
 
-# pms_integration
+# pms_integration.yml
 Integration with the RWG's MICRO FIAS simulator with DPSK mangling. You need to initialize the FIAS simulator in RWG.
 
 The remove configuration folder contains templates to remove each of the config templates above.
