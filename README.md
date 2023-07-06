@@ -15,7 +15,7 @@ One RADIUS realm, one WLAN, one VLAN pool and one network address. One open wlan
 # dpsk_using_same_vlans.yml
 Three RADIUS realms, three account groups, three VLANs and three network addresses. Six accounts. One wlan using DPSK.
 
-# dpsk_using_vlan_pool.yaml
+# dpsk_using_vlan_pool.yml
 One RADIUS realm, one account groups, one VLANs and one network addresses. Two accounts. One wlan using DPSK.
 
 # microsegmentation.yml
