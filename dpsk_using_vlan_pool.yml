@@ -77,6 +77,12 @@ RadiusServer:
   - VLAN Pool
   policies:
   - VLAN Pool Policy
+  radius_attribute_patterns:
+  - id: 1
+    radius_attribute: Called-Station-Id
+    pattern: vlan-pool
+    priority: 0
+    logic: OR
 Wlan:
 - name: vlan-pool
   ssid: vlan-pool
