@@ -136,6 +136,12 @@ RadiusServer:
   - VLAN 100
   policies:
   - VLAN 100 Policy
+  radius_attribute_patterns:
+  - id: 1
+    radius_attribute: Called-Station-Id
+    pattern: dpsk
+    priority: 0
+    logic: OR
 - name: Realm VLAN 150
   reuse_vlans: true
   vta_timeout_minutes: 60
@@ -152,6 +158,12 @@ RadiusServer:
   - VLAN 150
   policies:
   - VLAN 150 Policy
+  radius_attribute_patterns:
+  - id: 2
+    radius_attribute: Called-Station-Id
+    pattern: dpsk
+    priority: 0
+    logic: OR
 - name: Realm VLAN 200
   reuse_vlans: true
   vta_timeout_minutes: 60
@@ -168,6 +180,12 @@ RadiusServer:
   - VLAN 200
   policies:
   - VLAN 200 Policy
+  radius_attribute_patterns:
+  - id: 3
+    radius_attribute: Called-Station-Id
+    pattern: dpsk
+    priority: 0
+    logic: OR
 Wlan:
 - name: dpsk
   ssid: dpsk
