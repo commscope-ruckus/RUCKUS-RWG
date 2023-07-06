@@ -1,0 +1,65 @@
+PmsServer:
+- name: USS Enterprise
+  interface: Fidelio
+  host: 127.0.0.1
+  port: 5010
+  timeout: 30
+  first_credential: RN
+  second_credential: GN
+  dd_format:
+  - mac_decimal
+  protocol: IP
+  subsequent_transaction_max_count: 0
+  subsequent_transaction_max_lifetime: 0
+  subsequent_transaction_price_reduction: 0%
+  ct_format:
+  - dhcp_hostname
+  - mac_vendor
+  - usage_plan
+  dd_length: 20
+  ct_length: 40
+  soap_endpoint: https://operademo3.microsdc.us
+  soap_username: HTNG
+  soap_password: HTNG
+  revenue_code: '2'
+  post_zero_charge: true
+  account_sharing: guest
+  show_only_matched_plans: true
+  dup_timeout_seconds: 60
+  enable_db_sync: true
+  send_post_request: true
+  service_code: WWW
+  description_field: usage_plan_name
+  transaction_code: '50'
+  resort_ident: FSDH4
+  itemizer_ident: '1'
+  payment_ident: '0'
+  revenue_center_ident: '1'
+  automatic_login_fallback: false
+  htng_username: OPERA
+  htng_password: OPERA
+  update_profile_email_mode: disabled
+  resid_match: A
+  tax_rate: 0.0
+  restrict_plans_guest_duration: true
+  restrict_plans_guest_group: true
+CustomDataSet:
+- name: USS Enterprise DPSKs
+  note: PMS
+CustomDataKey:
+- name: pms_guest
+  custom_data_set: USS Enterprise DPSKs
+  value_string: name
+  value_time: 2000-01-01 00:00:00.000000000 Z
+- name: pms_room
+  custom_data_set: USS Enterprise DPSKs
+  value_string: room
+  value_time: 2000-01-01 00:00:00.000000000 Z
+RadiusServer:
+- name: Realm VLAN Pool
+  create_account: true
+  pms_servers:
+  - USS Enterprise
+
+
+
