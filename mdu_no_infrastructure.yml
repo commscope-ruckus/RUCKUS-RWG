@@ -1,0 +1,576 @@
+DeviceOption:
+- name: Default
+  active: true
+  device_location: unknown
+  domain_name: rwg-mm.ruckusdemos.net
+  ntp_server: rgnets.pool.ntp.org
+  time_zone: America/Chicago
+  smtp_address: localhost
+  smtp_port: 25
+  log_rotate_hour: 3
+  log_rotate_count: 10
+  ssh_port: 22
+  country_code: US
+  sync_builtin_admins: true
+  log_level: debug
+Policy:
+- name: Management
+- name: Post-Auth Landing
+- name: Premium
+- name: Free
+- name: Business
+- name: Basic
+- name: Pre-Auth / Guests
+- name: Default
+  _delete: true
+SubnetsFilter:
+- name: Block Subnets
+  policies:
+  - Basic
+  - Business
+  - Free
+  - Post-Auth Landing
+  - Pre-Auth / Guests
+  - Premium
+Vlan:
+- name: Pre-Auth / Guests
+  interface: igb5
+  tag: 1100
+  autoincrement_ratio: 8
+  autoincrement_mode: address
+- name: Post-Auth / Accounts
+  interface: igb5
+  tag: 1108
+  autoincrement_ratio: 1
+  autoincrement_mode: address
+Address:
+- name: Pre-Auth / Guests
+  vlan: Pre-Auth / Guests
+  span: 1
+  autoincrement: 64
+  cidr: 100.0.0.1/30
+- name: Post-Auth / Accounts
+  vlan: Post-Auth / Accounts
+  span: 1
+  autoincrement: 110
+  cidr: 100.0.1.1/24
+DhcpPool:
+- name: Pre-Auth / Guests
+  start_ip: 100.0.0.2
+  end_ip: 100.0.0.254
+  start_reserved: 0
+  end_reserved: 0
+  router_host_nth: 0
+- name: Post-Auth / Accounts
+  start_ip: 100.0.1.2
+  end_ip: 100.0.110.254
+  start_reserved: 0
+  end_reserved: 0
+  router_host_nth: 0
+IpGroup:
+- name: Pre-Auth / Guests
+  priority: 5
+  addresses:
+  - Pre-Auth / Guests
+  policy: Pre-Auth / Guests
+- name: Post-Auth / Accounts
+  priority: 2
+  addresses:
+  - Post-Auth / Accounts
+  policy: Post-Auth Landing
+- name: Management
+  priority: 8
+  addresses:
+  - Management LAN
+  policy: Management
+RadiusServer:
+- name: Pre-Auth / Guests
+  reuse_vlans: true
+  vta_timeout_minutes: 60
+  vlan_sharing: device
+  unlimited_vlans_per_csid_mac: true
+  rank: 4
+  realm_admission_logic: or
+  radius_server_attributes:
+  - Tunnel-Type
+  - Tunnel-Medium-Type
+  - Tunnel-Private-Group-Id
+  - Ruckus-DPSK
+  vlans:
+  - Pre-Auth / Guests
+  radius_attribute_patterns:
+  - id: 1
+    radius_attribute: Called-Station-Id
+    pattern: Start Here
+    priority: 0
+    logic: OR
+- name: Post-Auth / Accounts
+  reuse_vlans: false
+  vta_timeout_minutes: 60
+  vlan_sharing: account
+  unlimited_vlans_per_csid_mac: true
+  rank: 2
+  realm_admission_logic: or
+  radius_server_attributes:
+  - Tunnel-Type
+  - Tunnel-Medium-Type
+  - Tunnel-Private-Group-Id
+  - Ruckus-DPSK
+  vlans:
+  - Post-Auth / Accounts
+  policies:
+  - Premium
+  - Free
+  - Business
+  - Basic
+- name: Wired Pre-Auth / Guest
+  reuse_vlans: true
+  vta_timeout_minutes: 60
+  vlan_sharing: device
+  unlimited_vlans_per_csid_mac: true
+  rank: 0
+  realm_admission_logic: or
+  radius_server_attributes:
+  - Tunnel-Type
+  - Tunnel-Medium-Type
+  - Tunnel-Private-Group-Id
+  vlans:
+  - Pre-Auth / Guests
+  radius_attribute_patterns:
+  - id: 2
+    radius_attribute: NAS-IP-Address
+    pattern: 192.168.5.1
+    priority: 0
+    logic: OR
+RadiusServerOption:
+- name: Default
+  active: true
+  auth_port: 1812
+  acct_port: 1813
+  radsec_port: 2083
+  debug_level: normal
+  min_tls_version: '1.2'
+  max_tls_version: '1.2'
+  policies:
+  - vSZ-249
+  - ICX 7150-A
+  - Management
+AccountGroup:
+- name: Free
+  policy: Free
+  priority: 4
+- name: Basic
+  policy: Basic
+  priority: 4
+- name: Premium
+  policy: Premium
+  priority: 4
+- name: Business
+  policy: Business
+  priority: 4
+SharedCredentialGroup:
+- name: Free
+  policy: Free
+  priority: 6
+  credential: free
+  min_mac_login_period: 1440
+  usage_minutes: 60
+  unlimited_usage_mb_up: true
+  unlimited_usage_mb_down: true
+  unlimited_simultaneous_sessions: true
+  starts_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2022-10-11 05:00:00.000000000 Z
+    zone: &1 !ruby/object:ActiveSupport::TimeZone
+      name: America/Chicago
+    time: 2022-10-11 00:00:00.000000000 Z
+  ends_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2032-10-31 05:00:00.000000000 Z
+    zone: *1
+    time: 2032-10-31 00:00:00.000000000 Z
+  state: active
+  mon: true
+  tues: true
+  wed: true
+  thurs: true
+  fri: true
+  sat: true
+  sun: true
+  recurring_method: none
+CaptivePortal:
+- name: Default Splash
+  portal_name: default
+  background_automatic_login: mac
+  portal_automatic_login: mac_or_cookie
+  password_reset_method: secret_question
+  role_attribute: none
+  shared_credential_groups:
+  - Free
+  wan_targets:
+  - Certificate Validation Hosts
+  - PayPal
+  policies:
+  - Pre-Auth / Guests
+LandingPortal:
+- name: Default Landing
+  portal_name: default
+  unlimited_session_minutes: true
+  idle_minutes: 20
+  session_grace_minutes: 15
+  portal_automatic_login: mac_or_cookie
+  background_automatic_login: mac
+  policies:
+  - Premium
+  - Free
+  - Basic
+  - Business
+- name: Post-Auth Landing
+  portal_name: default
+  unlimited_session_minutes: true
+  idle_minutes: 20
+  session_grace_minutes: 15
+  portal_automatic_login: mac_or_cookie
+  background_automatic_login: mac
+  policies:
+  - Post-Auth Landing
+SurveyQuestion:
+- question: Email Address
+  question_type: email
+  required: true
+  position: 1
+  captive_portals:
+  - Default Splash
+  landing_portals:
+  - Default Landing
+  - Post-Auth Landing
+Merchant:
+- name: Authorize.Net
+  gateway: AuthorizeNet
+  store_payment_methods: true
+  login: your_login
+  password: your_password
+  signature: your_signature
+  dup_timeout_seconds: 60
+- name: Paypal
+  login: your@email.com
+  integration: Paypal
+  dup_timeout_seconds: 60
+TimePlan:
+- name: Unlimited
+  price: 0.0
+  unlimited_usage_minutes: true
+QuotaPlan:
+- name: 5GB / 2GB
+  price: 0.0
+  usage_mb_up: 2048
+  usage_mb_down: 5120
+- name: 15GB / 7 GB
+  price: 0.0
+  usage_mb_up: 7168
+  usage_mb_down: 15360
+- name: 50GB / 25GB
+  price: 0.0
+  usage_mb_up: 25600
+  usage_mb_down: 51200
+- name: Unlimited
+  price: 0.0
+  unlimited_usage_mb_up: true
+  unlimited_usage_mb_down: true
+UsagePlan:
+- name: One Day Free 5GB
+  account_group: Free
+  currency: USD
+  recurring_method: none
+  variable_recurring_day: true
+  automatic_login: true
+  time_plan: Unlimited
+  quota_plan: 5GB / 2GB
+  usage_lifetime_time: 1
+  recurring_retry_grace_minutes: 1440
+  recurring_fail_limit: 5
+  lock_devices: true
+  max_sessions: 3
+  unlimited_devices: true
+  usage_lifetime_time_unit: days
+  max_dedicated_ips: 0
+  pms_guest_match_operator: OR
+  recurring_lifetime_time_unit: months
+  unlimited_recurring_lifetime: true
+  validation_method: none
+  validation_grace_minutes: 0
+  max_party_devices: 0
+  captive_portals:
+  - Default Splash
+  landing_portals:
+  - Default Landing
+  merchants:
+  - Paypal
+- name: One Month Basic 50GB
+  account_group: Basic
+  currency: USD
+  recurring_method: monthly
+  variable_recurring_day: true
+  automatic_login: true
+  time_plan: Unlimited
+  quota_plan: 50GB / 25GB
+  usage_lifetime_time: 1
+  recurring_retry_grace_minutes: 1440
+  recurring_fail_limit: 5
+  lock_devices: true
+  max_sessions: 3
+  unlimited_devices: true
+  usage_lifetime_time_unit: months
+  max_dedicated_ips: 0
+  pms_guest_match_operator: OR
+  recurring_lifetime_time_unit: months
+  unlimited_recurring_lifetime: true
+  validation_method: none
+  validation_grace_minutes: 0
+  max_party_devices: 0
+  base_price: 25.0
+  captive_portals:
+  - Default Splash
+  landing_portals:
+  - Default Landing
+  merchants:
+  - Authorize.Net
+- name: One Month Business Class
+  account_group: Business
+  currency: USD
+  recurring_method: monthly
+  variable_recurring_day: true
+  automatic_login: true
+  time_plan: Unlimited
+  quota_plan: Unlimited
+  usage_lifetime_time: 1
+  recurring_retry_grace_minutes: 1440
+  recurring_fail_limit: 5
+  lock_devices: true
+  unlimited_devices: true
+  unlimited_sessions: true
+  usage_lifetime_time_unit: months
+  max_dedicated_ips: 0
+  pms_guest_match_operator: OR
+  recurring_lifetime_time_unit: months
+  unlimited_recurring_lifetime: true
+  validation_method: none
+  validation_grace_minutes: 0
+  max_party_devices: 0
+  base_price: 150.0
+  captive_portals:
+  - Default Splash
+  landing_portals:
+  - Default Landing
+  merchants:
+  - Authorize.Net
+- name: On Demand 50GB
+  account_group: Premium
+  currency: USD
+  recurring_method: on-demand
+  automatic_login: true
+  time_plan: Unlimited
+  quota_plan: 50GB / 25GB
+  unlimited_usage_lifetime: true
+  recurring_retry_grace_minutes: 1440
+  recurring_fail_limit: 5
+  lock_devices: true
+  unlimited_devices: true
+  unlimited_sessions: true
+  usage_lifetime_time_unit: months
+  max_dedicated_ips: 0
+  pms_guest_match_operator: OR
+  recurring_lifetime_time_unit: months
+  unlimited_recurring_lifetime: true
+  validation_method: none
+  validation_grace_minutes: 0
+  max_party_devices: 0
+  base_price: 25.0
+  captive_portals:
+  - Default Splash
+  landing_portals:
+  - Default Landing
+  merchants:
+  - Authorize.Net
+- name: One Day 15GB
+  account_group: Basic
+  currency: USD
+  recurring_method: none
+  variable_recurring_day: true
+  automatic_login: true
+  time_plan: Unlimited
+  quota_plan: 15GB / 7 GB
+  usage_lifetime_time: 1
+  recurring_retry_grace_minutes: 1440
+  recurring_fail_limit: 5
+  lock_devices: true
+  max_sessions: 3
+  unlimited_devices: true
+  usage_lifetime_time_unit: days
+  max_dedicated_ips: 0
+  pms_guest_match_operator: OR
+  recurring_lifetime_time_unit: months
+  unlimited_recurring_lifetime: true
+  validation_method: none
+  validation_grace_minutes: 0
+  max_party_devices: 0
+  base_price: 10.0
+  captive_portals:
+  - Default Splash
+  landing_portals:
+  - Default Landing
+  merchants:
+  - Paypal
+BandwidthQueue:
+- name: Infrastructure
+  upload_bw: 100
+  upload_bw_unit: "%"
+  download_bw: 100
+  download_bw_unit: "%"
+  priority: 0
+  rt_upload_bw_unit: Mbps
+  rt_download_bw_unit: Mbps
+  burst_upload_bw_unit: Mbps
+  burst_download_bw_unit: Mbps
+  sharing: group
+  disable_auto_ip_queues: true
+  policies:
+  - vSZ-249
+  - ICX 7150-A
+  - Management
+- name: 3x1 Mbps with burst
+  upload_bw: 1
+  upload_bw_unit: Mbps
+  download_bw: 3
+  download_bw_unit: Mbps
+  priority: 0
+  rt_upload_bw_unit: Mbps
+  rt_download_bw_unit: Mbps
+  burst_upload_bw: 2
+  burst_upload_bw_unit: Mbps
+  burst_download_bw: 10
+  burst_download_bw_unit: Mbps
+  burst_ms: 5000
+  sharing: ip
+  policies:
+  - Free
+- name: 20x2 Mbps per account
+  upload_bw: 2
+  upload_bw_unit: Mbps
+  download_bw: 20
+  download_bw_unit: Mbps
+  priority: 0
+  rt_upload_bw_unit: Mbps
+  rt_download_bw_unit: Mbps
+  burst_upload_bw_unit: Mbps
+  burst_download_bw_unit: Mbps
+  sharing: account
+  policies:
+  - Basic
+- name: 50x2 Mbps with guarantee
+  upload_bw: 2
+  upload_bw_unit: Mbps
+  download_bw: 50
+  download_bw_unit: Mbps
+  priority: 0
+  rt_upload_bw: 1
+  rt_upload_bw_unit: Mbps
+  rt_download_bw: 10
+  rt_download_bw_unit: Mbps
+  burst_upload_bw_unit: Mbps
+  burst_download_bw_unit: Mbps
+  sharing: account
+  policies:
+  - Business
+- name: 50x2 Mbps per account
+  upload_bw: 2
+  upload_bw_unit: Mbps
+  download_bw: 50
+  download_bw_unit: Mbps
+  priority: 0
+  rt_upload_bw_unit: Mbps
+  rt_download_bw_unit: Mbps
+  burst_upload_bw_unit: Mbps
+  burst_download_bw_unit: Mbps
+  sharing: account
+  policies:
+  - Premium
+- name: 100%
+  upload_bw: 100
+  upload_bw_unit: "%"
+  download_bw: 100
+  download_bw_unit: "%"
+  priority: 0
+  rt_upload_bw_unit: Kbps
+  rt_download_bw_unit: Kbps
+  burst_upload_bw_unit: Kbps
+  burst_download_bw_unit: Kbps
+  sharing: ip
+  policies:
+  - Post-Auth Landing
+  - Pre-Auth / Guests
+AccessPointProfile:
+- name: default
+  default: true
+  device_type: anyap
+  management_vlan: 1
+  data_rates_24: gn
+  data_rates_5: default
+  antenna_gain_24: 0
+  antenna_gain_5: 0
+  infrastructure_device: vSZ-249
+  access_point_zone: Enceladus
+Wlan:
+- name: lab1_management
+  ssid: lab1_management
+  encryption: ccmp
+  authentication: none
+  psk: P@$$w0rd123
+  default_vlan: 1
+  infrastructure_device: vSZ-249
+  access_point_zone: Enceladus
+  access_point_profiles:
+  - default
+- name: Residents
+  ssid: Residents
+  encryption: ccmp
+  authentication: dpsk
+  default_vlan: 1
+  accounting: true
+  infrastructure_device: vSZ-249
+  access_point_zone: Enceladus
+  access_point_profiles:
+  - default
+  vlans:
+  - Post-Auth / Accounts
+  policies:
+  - Premium
+  - Free
+  - Business
+  - Basic
+- name: Start Here
+  ssid: Start Here
+  encryption: none
+  authentication: mac
+  default_vlan: 1
+  accounting: true
+  infrastructure_device: vSZ-249
+  access_point_zone: Enceladus
+  access_point_profiles:
+  - default
+  vlans:
+  - Pre-Auth / Guests
+  policies:
+  - Pre-Auth / Guests
+Squid:
+- name: Cache
+  _delete: true
+Nat:
+- name: Disable NAT on "Pre-Auth / Guests"
+  addresses:
+  - Pre-Auth / Guests
+  uplinks:
+  - Uplink
+- name: Disable NAT on "Post-Auth / Accounts"
+  addresses:
+  - Post-Auth / Accounts
+  uplinks:
+  - Uplink
