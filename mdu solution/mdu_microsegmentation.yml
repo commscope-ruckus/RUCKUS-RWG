@@ -1,0 +1,64 @@
+---
+Policy:
+- name: vSZ
+Vlan:
+- name: Pre-Auth / Guests
+  interface: igb5
+  tag: 1100
+  autoincrement_ratio: 8
+  autoincrement_mode: address
+Address:
+- name: Pre-Auth / Guests
+  vlan: Pre-Auth / Guests
+  span: 1
+  autoincrement: 64
+  cidr: 10.0.1.1/30
+DhcpPool:
+- name: Pre-Auth / Guests
+  start_ip: 10.0.1.2
+  end_ip: 10.0.1.254
+  start_reserved: 0
+  end_reserved: 0
+  router_host_nth: 0
+IpGroup:
+- name: vSZ
+  policy: vSZ
+  priority: 9
+- name: Pre-Auth / Guests
+  priority: 2
+RadiusServer:
+- name: Pre-Auth / Guests
+  reuse_vlans: true
+  vta_timeout_minutes: 60
+  vlan_sharing: device
+  vlans:
+  - Pre-Auth / Guests
+  unlimited_vlans_per_csid_mac: true
+  rank: 2
+  realm_admission_logic: or
+  radius_server_attributes:
+  - Tunnel-Type
+  - Tunnel-Medium-Type
+  - Tunnel-Private-Group-Id
+  radius_attribute_patterns:
+  - id: 1
+    radius_attribute: Called-Station-Id
+    pattern: Start Here
+    priority: 0
+    logic: OR
+WlanDevice:
+- name: vSZ
+  ip_group: vSZ
+  device: ruckos
+  host: 192.168.5.15
+  username: admin
+  password: ruckus123!
+  protocol: ssh_coa
+  port: 22
+  timeout: 5
+  community_string: public
+  snmp_port: 161
+  api_port: 8443
+  monitoring_enabled: true
+  type: WlanDevice
+  management_vlan: 1
