@@ -1,0 +1,158 @@
+TimePlan:
+- name: Unlimited
+  price: 0.0
+  unlimited_usage_minutes: true
+  _delete: true
+QuotaPlan:
+- name: 5GB / 2GB
+  price: 0.0
+  usage_mb_up: 2048
+  usage_mb_down: 5120
+  _delete: true
+- name: 15GB / 7 GB
+  price: 0.0
+  usage_mb_up: 7168
+  usage_mb_down: 15360
+  _delete: true
+- name: 50GB / 25GB
+  price: 0.0
+  usage_mb_up: 25600
+  usage_mb_down: 51200
+  _delete: true
+- name: Unlimited
+  price: 0.0
+  unlimited_usage_mb_up: true
+  unlimited_usage_mb_down: true
+  _delete: true
+UsagePlan:
+- name: One Day Free 5GB
+  currency: USD
+  recurring_method: none
+  variable_recurring_day: true
+  automatic_login: true
+  time_plan: Unlimited
+  quota_plan: 5GB / 2GB
+  usage_lifetime_time: 1
+  recurring_retry_grace_minutes: 1440
+  recurring_fail_limit: 5
+  lock_devices: true
+  max_sessions: 3
+  unlimited_devices: true
+  usage_lifetime_time_unit: days
+  max_dedicated_ips: 0
+  pms_guest_match_operator: OR
+  recurring_lifetime_time_unit: months
+  unlimited_recurring_lifetime: true
+  validation_method: none
+  validation_grace_minutes: 0
+  max_party_devices: 0
+  captive_portals:
+  - Default Splash
+  _delete: true
+- name: One Month Basic 50GB
+  currency: USD
+  recurring_method: monthly
+  variable_recurring_day: true
+  automatic_login: true
+  time_plan: Unlimited
+  quota_plan: 50GB / 25GB
+  usage_lifetime_time: 1
+  recurring_retry_grace_minutes: 1440
+  recurring_fail_limit: 5
+  lock_devices: true
+  max_sessions: 3
+  unlimited_devices: true
+  usage_lifetime_time_unit: months
+  max_dedicated_ips: 0
+  pms_guest_match_operator: OR
+  recurring_lifetime_time_unit: months
+  unlimited_recurring_lifetime: true
+  validation_method: none
+  validation_grace_minutes: 0
+  max_party_devices: 0
+  base_price: 25.0
+  captive_portals:
+  - Default Splash
+  merchants:
+  - Authorize.Net
+  _delete: true
+- name: One Month Business Class
+  currency: USD
+  recurring_method: monthly
+  variable_recurring_day: true
+  automatic_login: true
+  time_plan: Unlimited
+  quota_plan: Unlimited
+  usage_lifetime_time: 1
+  recurring_retry_grace_minutes: 1440
+  recurring_fail_limit: 5
+  lock_devices: true
+  unlimited_devices: true
+  unlimited_sessions: true
+  usage_lifetime_time_unit: months
+  max_dedicated_ips: 0
+  pms_guest_match_operator: OR
+  recurring_lifetime_time_unit: months
+  unlimited_recurring_lifetime: true
+  validation_method: none
+  validation_grace_minutes: 0
+  max_party_devices: 0
+  base_price: 150.0
+  captive_portals:
+  - Default Splash
+  merchants:
+  - Authorize.Net
+  _delete: true
+- name: On Demand 50GB
+  currency: USD
+  recurring_method: on-demand
+  automatic_login: true
+  time_plan: Unlimited
+  quota_plan: 50GB / 25GB
+  unlimited_usage_lifetime: true
+  recurring_retry_grace_minutes: 1440
+  recurring_fail_limit: 5
+  lock_devices: true
+  unlimited_devices: true
+  unlimited_sessions: true
+  usage_lifetime_time_unit: months
+  max_dedicated_ips: 0
+  pms_guest_match_operator: OR
+  recurring_lifetime_time_unit: months
+  unlimited_recurring_lifetime: true
+  validation_method: none
+  validation_grace_minutes: 0
+  max_party_devices: 0
+  base_price: 25.0
+  captive_portals:
+  - Default Splash
+  merchants:
+  - Authorize.Net
+  _delete: true
+- name: One Day 15GB
+  currency: USD
+  recurring_method: none
+  variable_recurring_day: true
+  automatic_login: true
+  time_plan: Unlimited
+  quota_plan: 15GB / 7 GB
+  usage_lifetime_time: 1
+  recurring_retry_grace_minutes: 1440
+  recurring_fail_limit: 5
+  lock_devices: true
+  max_sessions: 3
+  unlimited_devices: true
+  usage_lifetime_time_unit: days
+  max_dedicated_ips: 0
+  pms_guest_match_operator: OR
+  recurring_lifetime_time_unit: months
+  unlimited_recurring_lifetime: true
+  validation_method: none
+  validation_grace_minutes: 0
+  max_party_devices: 0
+  base_price: 10.0
+  captive_portals:
+  - Default Splash
+  merchants:
+  - PayPal
+  _delete: true
