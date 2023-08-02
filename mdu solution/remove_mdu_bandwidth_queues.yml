@@ -1,0 +1,75 @@
+BandwidthQueue:
+- name: 3x1 Mbps with burst
+  upload_bw: 1
+  upload_bw_unit: Mbps
+  download_bw: 3
+  download_bw_unit: Mbps
+  priority: 0
+  rt_upload_bw_unit: Mbps
+  rt_download_bw_unit: Mbps
+  burst_upload_bw: 2
+  burst_upload_bw_unit: Mbps
+  burst_download_bw: 10
+  burst_download_bw_unit: Mbps
+  burst_ms: 5000
+  sharing: ip
+  policies:
+  - Free
+  _delete: true
+- name: 20x2 Mbps per account
+  upload_bw: 2
+  upload_bw_unit: Mbps
+  download_bw: 20
+  download_bw_unit: Mbps
+  priority: 0
+  rt_upload_bw_unit: Mbps
+  rt_download_bw_unit: Mbps
+  burst_upload_bw_unit: Mbps
+  burst_download_bw_unit: Mbps
+  sharing: account
+  policies:
+  - Basic
+  _delete: true
+- name: 50x2 Mbps with guarantee
+  upload_bw: 2
+  upload_bw_unit: Mbps
+  download_bw: 50
+  download_bw_unit: Mbps
+  priority: 0
+  rt_upload_bw: 1
+  rt_upload_bw_unit: Mbps
+  rt_download_bw: 10
+  rt_download_bw_unit: Mbps
+  burst_upload_bw_unit: Mbps
+  burst_download_bw_unit: Mbps
+  sharing: account
+  policies:
+  - Business
+  _delete: true
+- name: 50x2 Mbps per account
+  upload_bw: 2
+  upload_bw_unit: Mbps
+  download_bw: 50
+  download_bw_unit: Mbps
+  priority: 0
+  rt_upload_bw_unit: Mbps
+  rt_download_bw_unit: Mbps
+  burst_upload_bw_unit: Mbps
+  burst_download_bw_unit: Mbps
+  sharing: account
+  policies:
+  - Premium
+  _delete: true
+- name: 100%
+  upload_bw: 100
+  upload_bw_unit: "%"
+  download_bw: 100
+  download_bw_unit: "%"
+  priority: 0
+  rt_upload_bw_unit: Kbps
+  rt_download_bw_unit: Kbps
+  burst_upload_bw_unit: Kbps
+  burst_download_bw_unit: Kbps
+  sharing: ip
+  policies:
+  - Pre-Auth / Guests
