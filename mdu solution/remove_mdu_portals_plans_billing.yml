@@ -1,0 +1,358 @@
+IpGroup:
+- name: Pre-Auth / Guests
+  policy: Pre-Auth / Guests
+  priority: 5
+  _delete: true
+Policy:
+- name: Premium
+  _delete: true
+- name: Free
+  _delete: true
+- name: Business
+  _delete: true
+- name: Basic
+  _delete: true
+- name: Pre-Auth / Guests
+  default: true
+  _delete: true
+- name: Default
+  default: true
+Squid:
+- name: Cache
+  wan_target_mode: cache
+  policies:
+  - Default
+SubnetsFilter:
+- name: Block Subnets
+  policies:
+  - Default
+LogHitsTrigger:
+- name: Webserver DDoS Prevention
+  policies:
+  - Default
+SharedCredentialGroup:
+- name: Free
+  policy: Free
+  priority: 6
+  credential: free
+  min_mac_login_period: 1440
+  usage_minutes: 60
+  unlimited_usage_mb_up: true
+  unlimited_usage_mb_down: true
+  unlimited_simultaneous_sessions: true
+  starts_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2023-08-03 05:00:00.000000000 Z
+    zone: &1 !ruby/object:ActiveSupport::TimeZone
+      name: America/Chicago
+    time: 2023-08-03 00:00:00.000000000 Z
+  ends_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: 2024-08-01 05:00:00.000000000 Z
+    zone: *1
+    time: 2024-08-01 00:00:00.000000000 Z
+  state: active
+  mon: true
+  tues: true
+  wed: true
+  thurs: true
+  fri: true
+  sat: true
+  sun: true
+  recurring_method: none
+  automatic_login: true
+  _delete: true
+CaptivePortal:
+- name: Default Splash
+  portal_name: default
+  background_automatic_login: mac
+  portal_automatic_login: mac_or_cookie
+  password_reset_method: secret_question
+  role_attribute: none
+  shared_credential_groups:
+  - Free
+  wan_targets:
+  - Certificate Validation Hosts
+  policies:
+  - Pre-Auth / Guests
+  _delete: true
+LandingPortal:
+- name: Default Landing
+  portal_name: default
+  unlimited_session_minutes: true
+  idle_minutes: 20
+  session_grace_minutes: 15
+  portal_automatic_login: mac_cookie
+  background_automatic_login: disabled
+  policies:
+  - Basic
+  - Business
+  - Free
+  - Premium
+  _delete: true
+Merchant:
+- name: PayPal
+  login: add_your_email
+  test: true
+  integration: Paypal
+  dup_timeout_seconds: 60
+  _delete: true
+- name: Authorize.Net
+  gateway: AuthorizeNet
+  login: add_your_id
+  password: add_your_password
+  test: true
+  signature: add_your_signature
+  store_payment_methods: true
+  dup_timeout_seconds: 60
+  _delete: true
+TimePlan:
+- name: Unlimited
+  price: 0.0
+  unlimited_usage_minutes: true
+  _delete: true
+QuotaPlan:
+- name: 5GB / 2GB
+  price: 0.0
+  usage_mb_up: 2048
+  usage_mb_down: 5120
+  _delete: true
+- name: 15GB / 7 GB
+  price: 0.0
+  usage_mb_up: 7168
+  usage_mb_down: 15360
+  _delete: true
+- name: 50GB / 25GB
+  price: 0.0
+  usage_mb_up: 25600
+  usage_mb_down: 51200
+  _delete: true
+- name: Unlimited
+  price: 0.0
+  unlimited_usage_mb_up: true
+  unlimited_usage_mb_down: true
+  _delete: true
+UsagePlan:
+- name: One Day Free 5GB
+  currency: USD
+  recurring_method: none
+  variable_recurring_day: true
+  automatic_login: true
+  time_plan: Unlimited
+  quota_plan: 5GB / 2GB
+  usage_lifetime_time: 1
+  recurring_retry_grace_minutes: 1440
+  recurring_fail_limit: 5
+  lock_devices: true
+  max_sessions: 3
+  unlimited_devices: true
+  usage_lifetime_time_unit: days
+  max_dedicated_ips: 0
+  pms_guest_match_operator: OR
+  recurring_lifetime_time_unit: months
+  unlimited_recurring_lifetime: true
+  validation_method: none
+  validation_grace_minutes: 0
+  max_party_devices: 0
+  captive_portals:
+  - Default Splash
+  _delete: true
+- name: One Month Basic 50GB
+  currency: USD
+  recurring_method: monthly
+  variable_recurring_day: true
+  automatic_login: true
+  time_plan: Unlimited
+  quota_plan: 50GB / 25GB
+  usage_lifetime_time: 1
+  recurring_retry_grace_minutes: 1440
+  recurring_fail_limit: 5
+  lock_devices: true
+  max_sessions: 3
+  unlimited_devices: true
+  usage_lifetime_time_unit: months
+  max_dedicated_ips: 0
+  pms_guest_match_operator: OR
+  recurring_lifetime_time_unit: months
+  unlimited_recurring_lifetime: true
+  validation_method: none
+  validation_grace_minutes: 0
+  max_party_devices: 0
+  base_price: 25.0
+  captive_portals:
+  - Default Splash
+  merchants:
+  - Authorize.Net
+  _delete: true
+- name: One Month Business Class
+  currency: USD
+  recurring_method: monthly
+  variable_recurring_day: true
+  automatic_login: true
+  time_plan: Unlimited
+  quota_plan: Unlimited
+  usage_lifetime_time: 1
+  recurring_retry_grace_minutes: 1440
+  recurring_fail_limit: 5
+  lock_devices: true
+  unlimited_devices: true
+  unlimited_sessions: true
+  usage_lifetime_time_unit: months
+  max_dedicated_ips: 0
+  pms_guest_match_operator: OR
+  recurring_lifetime_time_unit: months
+  unlimited_recurring_lifetime: true
+  validation_method: none
+  validation_grace_minutes: 0
+  max_party_devices: 0
+  base_price: 150.0
+  captive_portals:
+  - Default Splash
+  merchants:
+  - Authorize.Net
+  _delete: true
+- name: On Demand 50GB
+  currency: USD
+  recurring_method: on-demand
+  automatic_login: true
+  time_plan: Unlimited
+  quota_plan: 50GB / 25GB
+  unlimited_usage_lifetime: true
+  recurring_retry_grace_minutes: 1440
+  recurring_fail_limit: 5
+  lock_devices: true
+  unlimited_devices: true
+  unlimited_sessions: true
+  usage_lifetime_time_unit: months
+  max_dedicated_ips: 0
+  pms_guest_match_operator: OR
+  recurring_lifetime_time_unit: months
+  unlimited_recurring_lifetime: true
+  validation_method: none
+  validation_grace_minutes: 0
+  max_party_devices: 0
+  base_price: 25.0
+  captive_portals:
+  - Default Splash
+  merchants:
+  - Authorize.Net
+  _delete: true
+- name: One Day 15GB
+  currency: USD
+  recurring_method: none
+  variable_recurring_day: true
+  automatic_login: true
+  time_plan: Unlimited
+  quota_plan: 15GB / 7 GB
+  usage_lifetime_time: 1
+  recurring_retry_grace_minutes: 1440
+  recurring_fail_limit: 5
+  lock_devices: true
+  max_sessions: 3
+  unlimited_devices: true
+  usage_lifetime_time_unit: days
+  max_dedicated_ips: 0
+  pms_guest_match_operator: OR
+  recurring_lifetime_time_unit: months
+  unlimited_recurring_lifetime: true
+  validation_method: none
+  validation_grace_minutes: 0
+  max_party_devices: 0
+  base_price: 10.0
+  captive_portals:
+  - Default Splash
+  merchants:
+  - PayPal
+  _delete: true
+BandwidthQueue:
+- name: 3x1 Mbps with burst
+  upload_bw: 1
+  upload_bw_unit: Mbps
+  download_bw: 3
+  download_bw_unit: Mbps
+  priority: 0
+  rt_upload_bw_unit: Mbps
+  rt_download_bw_unit: Mbps
+  burst_upload_bw: 2
+  burst_upload_bw_unit: Mbps
+  burst_download_bw: 10
+  burst_download_bw_unit: Mbps
+  burst_ms: 5000
+  sharing: ip
+  policies:
+  - Free
+  _delete: true
+- name: 20x2 Mbps per account
+  upload_bw: 2
+  upload_bw_unit: Mbps
+  download_bw: 20
+  download_bw_unit: Mbps
+  priority: 0
+  rt_upload_bw_unit: Mbps
+  rt_download_bw_unit: Mbps
+  burst_upload_bw_unit: Mbps
+  burst_download_bw_unit: Mbps
+  sharing: account
+  policies:
+  - Basic
+  _delete: true
+- name: 50x2 Mbps with guarantee
+  upload_bw: 2
+  upload_bw_unit: Mbps
+  download_bw: 50
+  download_bw_unit: Mbps
+  priority: 0
+  rt_upload_bw: 1
+  rt_upload_bw_unit: Mbps
+  rt_download_bw: 10
+  rt_download_bw_unit: Mbps
+  burst_upload_bw_unit: Mbps
+  burst_download_bw_unit: Mbps
+  sharing: account
+  policies:
+  - Business
+  _delete: true
+- name: 50x2 Mbps per account
+  upload_bw: 2
+  upload_bw_unit: Mbps
+  download_bw: 50
+  download_bw_unit: Mbps
+  priority: 0
+  rt_upload_bw_unit: Mbps
+  rt_download_bw_unit: Mbps
+  burst_upload_bw_unit: Mbps
+  burst_download_bw_unit: Mbps
+  sharing: account
+  policies:
+  - Premium
+  _delete: true
+AccountGroup:
+- name: Premium
+  policy: Premium
+  priority: 4
+  _delete: true
+- name: Basic
+  policy: Basic
+  priority: 4
+  _delete: true
+- name: Business
+  policy: Business
+  priority: 4
+  _delete: true
+- name: Free
+  policy: Free
+  priority: 4
+  _delete: true
+BandwidthQueue:
+- name: 100%
+  upload_bw: 100
+  upload_bw_unit: "%"
+  download_bw: 100
+  download_bw_unit: "%"
+  priority: 0
+  rt_upload_bw_unit: Kbps
+  rt_download_bw_unit: Kbps
+  burst_upload_bw_unit: Kbps
+  burst_download_bw_unit: Kbps
+  sharing: ip
+  policies:
+  - Default
+
