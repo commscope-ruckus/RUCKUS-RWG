@@ -1,0 +1,132 @@
+---
+Policy:
+- name: Default
+  default: true
+- name: Premium
+  _delete: true
+- name: Free
+  _delete: true
+- name: Business
+  _delete: true
+- name: Basic
+  _delete: true
+- name: Post-Auth / Landing
+  _delete: true
+- name: Management
+  _delete: true
+- name: Pre-Auth / Guests
+  _delete: true
+Vlan:
+- name: Pre-Auth / Guests
+  _delete: true
+- name: Post-Auth / Accounts
+  _delete: true
+Address:
+- name: Pre-Auth / Guests
+  _delete: true
+- name: Post-Auth / Accounts
+  _delete: true
+DhcpPool:
+- name: Pre-Auth / Guests
+  _delete: true
+- name: Post-Auth / Accounts
+  _delete: true
+IpGroup:
+- name: Pre-Auth / Guests
+  _delete: true
+- name: Post-Auth / Accounts
+  _delete: true
+- name: Management
+  _delete: true
+RadiusServer:
+- name: Pre-Auth / Guests
+  _delete: true
+- name: Post-Auth / Accounts
+  _delete: true
+- name: Wired Pre-Auth / Guests
+  _delete: true
+SharedCredentialGroup:
+- name: Free
+  _delete: true
+CaptivePortal:
+- name: Default Splash
+  _delete: true
+LandingPortal:
+- name: Default Landing
+  _delete: true
+- name: Post-Auth / Landing
+  _delete: true
+- name: Default Landing
+  _delete: true
+TimePlan:
+- name: Unlimited
+  _delete: true
+QuotaPlan:
+- name: 5GB / 2GB
+  _delete: true
+- name: 15GB / 7 GB
+  _delete: true
+- name: 50GB / 25GB
+  _delete: true
+- name: Unlimited
+  _delete: true
+AccountGroup:
+- name: Premium
+  _delete: true
+- name: Basic
+  _delete: true
+- name: Business
+  _delete: true
+- name: Free
+  _delete: true
+UsagePlan:
+- name: One Day Free 5GB
+  _delete: true
+- name: One Month Basic 50GB
+  _delete: true
+- name: One Month Business Class
+  _delete: true
+- name: On Demand 50GB
+  _delete: true
+- name: One Day 15GB
+  _delete: true
+BandwidthQueue:
+- name: 3x1 Mbps with burst
+  _delete: true
+- name: 20x2 Mbps per account
+  _delete: true
+- name: 50x2 Mbps with guarantee
+  _delete: true
+- name: 50x2 Mbps per account
+  _delete: true
+Squid:
+- name: Cache
+  policies:
+  - Default
+HttpVirtualHost:
+- name: vSZ
+  _delete: true
+Wlan:
+- name: Start Here
+  _delete: true
+- name: Residents
+  _delete: true
+- name: lab1_management
+  _delete: true
+SwitchPortProfile:
+- name: Trunk Ports
+  _delete: true
+- name: Users
+  _delete: true
+BandwidthQueue:
+- name: 100%
+  policies:
+  - Default
+SubnetsFilter:
+- name: Block Subnets
+  policies:
+  - Default
+LogHitsTrigger:
+- name: Webserver DDoS Prevention
+  policies:
+  - Default
