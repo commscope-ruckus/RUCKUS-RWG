@@ -125,6 +125,8 @@ UsagePlan:
   max_party_devices: 0
   captive_portals:
   - Default Splash
+  landing_portals:
+  - Default Landing
 - name: One Month Basic 50GB
   currency: USD
   recurring_method: monthly
@@ -149,6 +151,8 @@ UsagePlan:
   base_price: 25.0
   captive_portals:
   - Default Splash
+  landing_portals:
+  - Default Landing
   merchants:
   - Authorize.Net
 - name: One Month Business Class
@@ -175,6 +179,8 @@ UsagePlan:
   base_price: 150.0
   captive_portals:
   - Default Splash
+  landing_portals:
+  - Default Landing
   merchants:
   - Authorize.Net
 - name: On Demand 50GB
@@ -200,6 +206,8 @@ UsagePlan:
   base_price: 25.0
   captive_portals:
   - Default Splash
+  landing_portals:
+  - Default Landing
   merchants:
   - Authorize.Net
 - name: One Day 15GB
@@ -226,6 +234,8 @@ UsagePlan:
   base_price: 10.0
   captive_portals:
   - Default Splash
+  landing_portals:
+  - Default Landing
   merchants:
   - PayPal
 BandwidthQueue:
