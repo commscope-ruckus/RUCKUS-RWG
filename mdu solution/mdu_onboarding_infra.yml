@@ -1,0 +1,216 @@
+---
+Policy:
+- name: Post-Auth / Landing
+- name: ICX 7150-A
+- name: Management
+Vlan:
+- name: Post-Auth / Accounts
+  interface: igb5
+  tag: 1108
+  autoincrement_ratio: 1
+  autoincrement_mode: address
+Address:
+- name: Post-Auth / Accounts
+  vlan: Post-Auth / Accounts
+  span: 1
+  autoincrement: 110
+  cidr: 10.0.2.1/24
+  policy: Post-Auth / Landing
+DhcpPool:
+- name: Post-Auth / Accounts
+  start_ip: 10.0.2.2
+  end_ip: 10.0.111.254
+  start_reserved: 0
+  end_reserved: 0
+  router_host_nth: 0
+IpGroup:
+- name: Post-Auth / Accounts
+  policy: Post-Auth / Landing
+  priority: 2
+  addresses:
+  - Post-Auth / Accounts
+- name: ICX 7150-A
+  policy: ICX 7150-A
+  priority: 9
+- name: Management
+  policy: Management
+  priority: 8
+  addresses:
+  - Management LAN
+LandingPortal:
+- name: Post-Auth / Landing
+  portal_name: default
+  unlimited_session_minutes: true
+  idle_minutes: 20
+  session_grace_minutes: 15
+  portal_automatic_login: mac_or_cookie
+  background_automatic_login: mac
+  policies:
+  - Post-Auth / Landing
+  usage_plans:
+  - name: One Day Free 5GB
+  - name: One Month Basic 50GB
+  - name: One Month Business Class
+  - name: On Demand 50GB
+  - name: One Day 15GB
+- name: Default Landing
+  portal_automatic_login: mac_or_cookie
+  background_automatic_login: mac
+CaptivePortal:
+- name: Default Splash
+  wan_targets:
+  - PayPal
+BandwidthQueue:
+- name: 100%
+  policies:
+  - Post-Auth / Landing
+  - vSZ
+SubnetsFilter:
+- name: Block Subnets
+  policies:
+  - Post-Auth / Landing
+  - Pre-Auth / Guests
+  - Free
+  - Basic
+  - Premium
+  - Business
+Squid:
+- name: Cache
+  _delete: true
+HttpVirtualHost:
+- name: vSZ
+  virtual_host_name: your_SZ_FQDN
+  proxy_target: 192.168.5.17
+  proxy_port: '8443'
+  enable_ssl: true
+SwitchDevice:
+- name: ICX 7150-A
+  ip_group: ICX 7150-A
+  device: ruckusicx
+  host: 192.168.5.11
+  username: admin
+  password: password
+  protocol: ssh_coa
+  enable_password: password
+  port: 22
+  timeout: 5
+  community_string: public
+  snmp_port: 161
+  monitoring_enabled: true
+  type: SwitchDevice
+RadiusServer:
+- name: Post-Auth / Accounts
+  infrastructure_devices:
+  - name: ICX 7150-A
+  - name: vSZ
+  vta_timeout_minutes: 60
+  vlan_sharing: account
+  unlimited_vlans_per_csid_mac: true
+  rank: 2
+  realm_admission_logic: or
+  radius_server_attributes:
+  - Ruckus-DPSK
+  - Tunnel-Password
+  - Tunnel-Type
+  - Tunnel-Medium-Type
+  - Tunnel-Private-Group-Id
+  vlans:
+  - Post-Auth / Accounts
+  policies:
+  - Basic
+  - Business
+  - Free
+  - Premium
+- name: Pre-Auth / Guests
+  rank: 4
+  infrastructure_devices:
+  - name: ICX 7150-A
+  - name: vSZ
+- name: Wired Pre-Auth / Guests
+  infrastructure_devices:
+  - name: ICX 7150-A
+  reuse_vlans: true
+  vta_timeout_minutes: 60
+  vlan_sharing: device
+  unlimited_vlans_per_csid_mac: true
+  rank: 0
+  realm_admission_logic: or
+  radius_server_attributes:
+  - Tunnel-Password
+  - Tunnel-Type
+  - Tunnel-Medium-Type
+  - Tunnel-Private-Group-Id
+  vlans:
+  - Pre-Auth / Guests
+  radius_attribute_patterns:
+  - id: 2
+    radius_attribute: NAS-IP-Address
+    pattern: 192.168.5.11
+    priority: 0
+    logic: OR
+Wlan:
+- name: Start Here
+  ssid: Start Here
+  encryption: none
+  authentication: mac
+  default_vlan: 1
+  infrastructure_device: vSZ
+  access_point_zone: zone_name
+  access_point_profiles:
+  - default
+  vlans:
+  - Pre-Auth / Guests
+- name: Residents
+  ssid: Residents
+  encryption: ccmp
+  authentication: dpsk
+  default_vlan: 1
+  infrastructure_device: vSZ
+  access_point_zone: zone_name
+  access_point_profiles:
+  - default
+  vlans:
+  - Post-Auth / Accounts
+  policies:
+  - Premium
+  - Free
+  - Business
+  - Basic
+- name: lab1_management
+  ssid: lab1_management
+  encryption: ccmp
+  authentication: none
+  psk: your_psk
+  default_vlan: 1
+  infrastructure_device: vSZ
+  access_point_zone: zone_name
+  access_point_profiles:
+  - default
+RadiusServerOption:
+- name: RADIUS Server
+  active: true
+  auth_port: 1812
+  acct_port: 1813
+  radsec_port: 2083
+  debug_level: normal
+  min_tls_version: '1.2'
+  max_tls_version: '1.2'
+  policies:
+  - ICX 7150-A
+  - vSZ
+SwitchPortProfile:
+- name: Trunk Ports
+  radius_authentication: none
+  vlans:
+  - name: Pre-Auth / Guests
+  - name: Post-Auth / Accounts
+- name: Users
+  radius_authentication: mac
+BandwidthQueue:
+- name: 100%
+  policies:
+  - Management
+  - ICX 7150-A
+  - vSZ
+  - Post-Auth / Landing
+  - Pre-Auth / Guests
