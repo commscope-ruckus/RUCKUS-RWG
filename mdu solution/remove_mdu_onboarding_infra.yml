@@ -1,0 +1,55 @@
+---
+Policy:
+- name: Post-Auth / Landing
+  _delete: True
+- name: Management
+  _delete: True
+- name: ICX 7150-A
+  _delete: True
+IpGroup:
+- name: Post-Auth / Accounts
+  _delete: True
+- name: Management
+  _delete: True
+- name: ICX 7150-A
+  _delete: True
+Vlan:
+- name: Post-Auth / Accounts
+  _delete: True
+Address:
+- name: Post-Auth / Accounts
+  _delete: True
+DhcpPool:
+- name: Post-Auth / Accounts
+  _delete: True
+LandingPortal:
+- name: Post-Auth / Landing
+  _delete: True
+RadiusServer:
+- name: Post-Auth / Accounts
+  _delete: True
+- name: Wired Pre-Auth / Guests
+  _delete: True
+CaptivePortal:
+- name: Default Splash
+  _delete: True
+Squid:
+- name: Cache
+HttpVirtualHost:
+- name: vSZ
+  _delete: True
+Wlan:
+- name: Start Here
+  _delete: True
+- name: Residents
+  _delete: True
+- name: lab1_management
+  _delete: True
+SwitchDevice:
+- name: ICX 7150-A
+  _delete: True
+SwitchPortProfile:
+- name: Trunk Ports
+  _delete: True
+- name: Users
+  _delete: True
