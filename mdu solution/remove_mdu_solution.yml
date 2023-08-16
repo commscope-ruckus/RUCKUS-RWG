@@ -99,6 +99,9 @@ BandwidthQueue:
   _delete: true
 - name: 50x2 Mbps per account
   _delete: true
+- name: 100%
+  policies:
+  - Default
 Squid:
 - name: Cache
   policies:
@@ -118,10 +121,6 @@ SwitchPortProfile:
   _delete: true
 - name: Users
   _delete: true
-BandwidthQueue:
-- name: 100%
-  policies:
-  - Default
 SubnetsFilter:
 - name: Block Subnets
   policies:
