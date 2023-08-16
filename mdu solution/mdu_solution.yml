@@ -74,7 +74,6 @@ RadiusServer:
   vlans:
   - Pre-Auth / Guests
   unlimited_vlans_per_csid_mac: true
-  rank: 2
   realm_admission_logic: or
   radius_server_attributes:
   - Tunnel-Type
